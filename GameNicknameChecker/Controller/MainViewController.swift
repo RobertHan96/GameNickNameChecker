@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class MainViewController: UIViewController {
 
@@ -45,7 +46,24 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func checkNicknameDuplicated(_ sender: UIButton) {
+        if let nickname = searchField.text {
+            NexonAPI().serachInFifaKartRider(nickname: nickname) { (data) in
+                print(data)
+            }
+            NexonAPI().serachInFifaOnline(nickname: nickname) { (data) in
+                print(data)
+            }
+            NexonAPI().serachInDnf(nickname: nickname) { (data) in
+                print(data)
+            }
+            NexonAPI().serachCyphers(nickname: nickname) { (data) in
+                print(data)
+            }
+            RiotAPI().serachInLoL(nickname: nickname) { (data) in
+                print(data)
+            }
 
+        }
     }
 }
 
