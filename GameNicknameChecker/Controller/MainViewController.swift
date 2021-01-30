@@ -6,15 +6,17 @@
 //
 
 import UIKit
-import Alamofire
+import KakaoSDKAuth
+import KakaoSDKUser
 
 class MainViewController: UIViewController {
-
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var myPageButton: UIBarButtonItem!
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var searchResultTableView: UITableView!
+    var result : [Response] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupGesture()
@@ -40,40 +42,114 @@ class MainViewController: UIViewController {
     }
     
     @objc func moveToMyPage(_ sender: UIImage) {
+        if (AuthApi.isKakaoTalkLoginAvailable()) {
+            // 카카오톡 로그인. api 호출 결과를 클로저로 전달.
+            AuthApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+               } else {
+                // error없이 로그인에 성공한 경우
+                   _ = oauthToken
+                let accessToken = oauthToken?.accessToken
+                self.moveToMyPageView()
+
+               }
+                
+            }
+        }
+    }
+
+    private func moveToMyPageView() {
         guard let myPage = self.storyboard?.instantiateViewController(withIdentifier: "myPage") as? MyPageViewController
             else { return }
         self.navigationController?.pushViewController(myPage, animated: true)
     }
-
+        
     @IBAction func checkNicknameDuplicated(_ sender: UIButton) {
-        if let nickname = searchField.text {
-            NexonAPI().serachInFifaKartRider(nickname: nickname) { (data) in
-                print(data)
+        result = []
+        self.searchResultTableView.reloadData()
+
+        if let nickname = searchField.text{
+            let group = DispatchGroup()
+            let queue = DispatchQueue.global(qos: .userInteractive)
+            queue.async {
+                NexonAPI().serachInFifaKartRider(nickname: nickname) { (data) in
+                    print("LOG - KartRider",data)
+                    self.result.append(data)
+                    self.searchResultTableView.reloadData()
+                    print(self.result)
+                }
             }
-            NexonAPI().serachInFifaOnline(nickname: nickname) { (data) in
-                print(data)
+            queue.async {
+                NexonAPI().serachInFifaOnline(nickname: nickname) { (data) in
+                    print("LOG - FIFA Online",data)
+                    self.result.append(data)
+                    self.searchResultTableView.reloadData()
+
+                    print(self.result)
+
+                }
             }
-            NexonAPI().serachInDnf(nickname: nickname) { (data) in
-                print(data)
+            queue.async {
+                NexonAPI().serachInDnf(nickname: nickname) { (data) in
+                    print("LOG - DNF",data)
+                    self.result.append(data)
+                    self.searchResultTableView.reloadData()
+
+                    print(self.result)
+
+                }
+
             }
-            NexonAPI().serachCyphers(nickname: nickname) { (data) in
-                print(data)
-            }
-            RiotAPI().serachInLoL(nickname: nickname) { (data) in
-                print(data)
+            queue.async {
+                NexonAPI().serachCyphers(nickname: nickname) { (data) in
+                    print("LOG - Cyphers",data)
+                    self.result.append(data)
+                    self.searchResultTableView.reloadData()
+
+                    print(self.result)
+
+                }
             }
 
+            queue.async {
+                RiotAPI().serachInLoL(nickname: nickname) { (data) in
+                    print("LOG - LOL",data)
+                    self.result.append(data)
+                    self.searchResultTableView.reloadData()
+
+                    print(self.result)
+
+                }
+            }
+            
+            group.notify(queue: queue) {
+                print("LOG - 모든 API 확인 완료 결과 반환...")
+            }
+        } else {
+            print("이름을 입력해주세요.")
         }
     }
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        result.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath as IndexPath) as? SearchResultCell else { return UITableViewCell() }
+        let response =  result[indexPath.row]
+        
+        cell.gameImage.image = UIImage(named: response.gameName)
+        if response.resultCount > 0 {
+            // 중복된 이름이 있기 때문에 중복이라고 출력하고, expendable cell 반환
+            cell.searchResultLabel.text = "중복"
+        } else {
+            // 게임 이미지만 채워넣고, 생성가능 이라는 문구 출력
+            cell.searchResultLabel.text = "생성 가능"
+        }
         
         return cell
 

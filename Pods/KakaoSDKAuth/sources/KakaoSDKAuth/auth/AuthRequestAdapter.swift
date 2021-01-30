@@ -17,7 +17,11 @@ import Alamofire
 import KakaoSDKCommon
 
 public class AuthRequestAdapter : RequestInterceptor {
-    public init() {}
+    private let kaHeader: String    
+    
+    public init(kaHeader: String = Constants.kaHeader) {
+        self.kaHeader = kaHeader
+    }
     
     public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest

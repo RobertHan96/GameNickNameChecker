@@ -10,6 +10,48 @@ import Foundation
 
 class APIs {
 
+    func getNicknameData(nickname: String, completion:@escaping ([Response]) -> Void) {
+        let group = DispatchGroup()
+        var result: [Response] = []
+
+        NexonAPI().serachInFifaKartRider(nickname: nickname) { (data) in
+            group.enter()
+            print("LOG - KartRider",data)
+            result.append(data)
+            group.leave()
+        }
+        NexonAPI().serachInFifaOnline(nickname: nickname) { (data) in
+            group.enter()
+            print("LOG - FIFA Online",data)
+            result.append(data)
+            group.leave()
+        }
+        NexonAPI().serachInDnf(nickname: nickname) { (data) in
+            group.enter()
+            print("LOG - DNF",data)
+            result.append(data)
+            group.leave()
+        }
+        NexonAPI().serachCyphers(nickname: nickname) { (data) in
+            group.enter()
+            print("LOG - Cyphers",data)
+            result.append(data)
+            group.leave()
+        }
+        RiotAPI().serachInLoL(nickname: nickname) { (data) in
+            group.enter()
+            print("LOG - LOL",data)
+            result.append(data)
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            print("LOG - 모든 API 확인 완료 결과 반환...")
+            print(result)
+            completion(result)
+        }
+    }
+    
     enum BaseUrls {
         case kartRider
         case fifaOnline
@@ -41,9 +83,27 @@ class APIs {
             case .fifaOnline : return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMzM2MDY1MTI0IiwiYXV0aF9pZCI6IjIiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4iLCJzZXJ2aWNlX2lkIjoiNDMwMDExNDgxIiwiWC1BcHAtUmF0ZS1MaW1pdCI6IjUwMDoxMCIsIm5iZiI6MTYwODE4NzgxNywiZXhwIjoxNjIzNzM5ODE3LCJpYXQiOjE2MDgxODc4MTd9.BiE07iCB7qNOx2RWLqBEN1MNez9QRuAdxUoDHnv60uc"
             case .dnf : return "nUtGaA6q0UqHfw4gk70uQsTsb4Ux7WvC"
             case .cyphers : return "6R4gMMSE1vdc3ZEOnUCUlahMzimYcdyD"
-            case .lol : return "RGAPI-4d36133c-030b-490d-bedc-e6b55a70f9f4"
+            case .lol : return "RGAPI-d7d0f130-ee09-4457-aeac-cf1bf0faf55f"
             }
         }
     }
     
+}
+
+enum ResponseIds {
+    case kartRider
+    case fifaOnline
+    case dnf
+    case cyphers
+    case lol
+
+    var name: String {
+        switch self {
+        case .kartRider : return "kart"
+        case .fifaOnline : return "fifa"
+        case .dnf : return "dnf"
+        case .cyphers : return "cyphers" 
+        case.lol : return "lol"
+        }
+    }
 }

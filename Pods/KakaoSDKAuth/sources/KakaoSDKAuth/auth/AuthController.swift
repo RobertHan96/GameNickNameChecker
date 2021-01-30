@@ -135,9 +135,9 @@ public class AuthController {
     }    
     
     /// :nodoc: iOS 11 이상에서 제공되는 (SF/ASWeb)AuthenticationSession 을 이용하여 로그인 페이지를 띄우고 쿠키 기반 로그인을 수행합니다. 이미 사파리에에서 로그인하여 카카오계정의 쿠키가 있다면 이를 활용하여 ID/PW 입력 없이 간편하게 로그인할 수 있습니다.
-    public func authorizeWithAuthenticationSession(prompts : [Prompt]? = nil,
+    public func authorizeWithAuthenticationSession(authType: AuthType? = nil,
                                                    completion: @escaping (OAuthToken?, Error?) -> Void) {
-        return self.authorizeWithAuthenticationSession(prompts: prompts,
+        return self.authorizeWithAuthenticationSession(authType: authType,
                                                        agtToken: nil,
                                                        scopes: nil,
                                                        channelPublicIds: nil,
@@ -146,11 +146,11 @@ public class AuthController {
     }
     
     /// :nodoc: 카카오싱크 전용입니다. 자세한 내용은 카카오싱크 전용 개발가이드를 참고하시기 바랍니다.
-    public func authorizeWithAuthenticationSession(prompts : [Prompt]? = nil,
+    public func authorizeWithAuthenticationSession(authType: AuthType? = nil,
                                                    channelPublicIds: [String]? = nil,
                                                    serviceTerms: [String]? = nil,
                                                    completion: @escaping (OAuthToken?, Error?) -> Void) {
-        return self.authorizeWithAuthenticationSession(prompts: prompts,
+        return self.authorizeWithAuthenticationSession(authType: authType,
                                                        agtToken: nil,
                                                        scopes: nil,
                                                        channelPublicIds: channelPublicIds,
@@ -181,7 +181,7 @@ public class AuthController {
     }
     
     /// :nodoc:
-    func authorizeWithAuthenticationSession(prompts: [Prompt]? = nil,
+    func authorizeWithAuthenticationSession(authType: AuthType? = nil,
                                             agtToken: String? = nil,
                                             scopes:[String]? = nil,
                                             channelPublicIds: [String]? = nil,
@@ -241,7 +241,7 @@ public class AuthController {
             }
         }
         
-        var parameters = self.makeParameters(prompts: prompts,
+        var parameters = self.makeParameters(authType: authType,
                                              agtToken: agtToken,
                                              scopes: scopes,
                                              channelPublicIds: channelPublicIds,
@@ -329,7 +329,7 @@ extension AuthController {
     }
     
     
-    public func makeParameters(prompts : [Prompt]? = nil,
+    public func makeParameters(authType: AuthType? = nil,
                                agtToken: String? = nil,
                                scopes:[String]? = nil,
                                channelPublicIds: [String]? = nil,
@@ -355,11 +355,8 @@ extension AuthController {
             }
         }
         
-        if let prompts = prompts {
-            let promptsValues : [String]? = prompts.map { $0.rawValue }
-            if let prompt = promptsValues?.joined(separator: ",") {
-                parameters["prompt"] = prompt
-            }
+        if let authType = authType {
+            parameters["auth_type"] = authType.rawValue
         }
         
         if let channelPublicIds = channelPublicIds?.joined(separator: ",") {
