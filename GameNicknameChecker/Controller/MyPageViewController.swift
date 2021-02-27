@@ -23,11 +23,11 @@ class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.checkNetworkConnectivity()
         searchHistory.reversed()
         userHistoryTableView.reloadData()
     }

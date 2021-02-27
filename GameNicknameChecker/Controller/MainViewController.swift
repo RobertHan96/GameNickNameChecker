@@ -30,6 +30,11 @@ class MainViewController: UIViewController {
         searchField.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.checkNetworkConnectivity()
+    }
+    
     private func setupUI() {
         navigationItem.title = UIStrings.mainNavigationBarTitle
         indicatorView.type = .ballPulseSync
