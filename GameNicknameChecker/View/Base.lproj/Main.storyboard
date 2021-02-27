@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--닉네임 검색-->
+        <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="GameNicknameChecker" customModuleProvider="target" sceneMemberID="viewController">
@@ -67,7 +67,7 @@
                             <constraint firstItem="ZVC-Of-rg9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="xhr-Vi-BFT"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="닉네임 검색" id="dwl-36-0nb"/>
+                    <navigationItem key="navigationItem" id="dwl-36-0nb"/>
                     <connections>
                         <outlet property="indicatorView" destination="cT1-oW-do1" id="kx6-1m-w77"/>
                         <outlet property="searchButton" destination="wcb-5P-iuY" id="xVf-jd-ysv"/>

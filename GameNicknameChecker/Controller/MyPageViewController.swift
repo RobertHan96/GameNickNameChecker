@@ -17,7 +17,8 @@ class MyPageViewController: UIViewController {
             setupTableView()
         }
     }
-    var searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? [String]()
+    static var identifier: String = "myPage"
+    var searchHistory = UserDefaults.standard.stringArray(forKey: UIStrings.userDefaultKeyForSearchHistory) ?? [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,8 +34,11 @@ class MyPageViewController: UIViewController {
         
     private func setupUI() {
         setUserInfo()
-        let iconImage = UIImage(named: "logout")?.resizeImage(size: CGSize(width: 26, height: 26))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconImage, style: .plain, target: self, action: #selector(logOut))
+        navigationItem.title = UIStrings.myPageNavigationBarTitle
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.myPageImage, style: .plain, target: self, action: #selector(logOut))
+        navigationItem.rightBarButtonItem?.tintColor = .systemTeal
+        navigationItem.leftBarButtonItem?.tintColor = .systemTeal
+        navigationItem.leftBarButtonItem?.title = nil
     }
     
     private func setupTableView() {
@@ -42,7 +46,7 @@ class MyPageViewController: UIViewController {
         userHistoryTableView.separatorInset.left = 0
         userHistoryTableView.dataSource = self
         userHistoryTableView.delegate = self
-        userHistoryTableView.register(UINib.init(nibName: "SearchHistoryCell", bundle: nil), forCellReuseIdentifier: "SearchHistoryCell")
+        userHistoryTableView.register(UINib.init(nibName: SearchHistoryCell.identifier, bundle: nil), forCellReuseIdentifier: SearchHistoryCell.identifier)
     }
     
     @objc func logOut() {
@@ -50,7 +54,7 @@ class MyPageViewController: UIViewController {
             if let error = error {
                 print(error)
             } else {
-                print("logout() success.")
+                print(LOGStrings.logoutCompleted)
 
             }
         }
@@ -63,14 +67,14 @@ class MyPageViewController: UIViewController {
                 print(error)
             }
             else {
-                print("me() success.")
+                print(LOGStrings.logoutCompleted)
                 _ = user
                 if let nickname = user?.kakaoAccount?.profile?.nickname {
                     if let url = user?.kakaoAccount?.profile?.profileImageUrl,
                         let data = try? Data(contentsOf: url) {
                         DispatchQueue.main.async {
                             self.profileImageView.image = UIImage(data: data)
-                            self.userNameLabel.text = "\(nickname)님의 검색 기록"
+                            self.userNameLabel.text = "\(nickname)\(UIStrings.userSearchHistoryLableTitle)"
                         }
                     }
                 }
@@ -86,11 +90,11 @@ extension MyPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchHistoryCell", for: indexPath as IndexPath) as? SearchHistoryCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchHistoryCell.identifier, for: indexPath as IndexPath) as? SearchHistoryCell else { return UITableViewCell() }
         if searchHistory.count > 0 {
             cell.searchKeywordLabel.text = searchHistory[indexPath.row]
         } else {
-            cell.searchKeywordLabel.text = "검색 내역이 없습니다"
+            cell.searchKeywordLabel.text = UIStrings.noSearchResultAlert
         }
         return cell
     }

@@ -31,11 +31,11 @@ class MainViewController: UIViewController {
     }
     
     private func setupUI() {
+        navigationItem.title = UIStrings.mainNavigationBarTitle
         indicatorView.type = .ballPulseSync
         indicatorView.color = .darkGray
         searchButton.layer.cornerRadius = 10
-        let iconImage = UIImage(systemName: "person.crop.circle")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconImage, style: .plain, target: self, action: #selector(moveToMyPage(_:)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.myPageImage, style: .plain, target: self, action: #selector(moveToMyPage(_:)))
         navigationItem.rightBarButtonItem?.tintColor = .systemTeal
     }
     
@@ -71,39 +71,45 @@ class MainViewController: UIViewController {
     }
 
     private func moveToMyPageView() {
-        
         guard let myPage = self.storyboard?.instantiateViewController(withIdentifier: "myPage") as? MyPageViewController
             else { return }
         self.navigationController?.pushViewController(myPage, animated: true)
     }
         
     @IBAction func checkNicknameDuplicated(_ sender: UIButton) {
-        if let nickname = searchField.text{
-            if nickname.count > 1 && nickname != prevName {
-                indicatorView.startAnimating()
-                self.searchResultTableView.beginUpdates()
-                self.searchResultTableView.endUpdates()
-
-                setSearchHistory(item: nickname)
-                APIs().getNicknameData(nickname: nickname) { (response) in
-                    
-                    self.result = response
-                    DispatchQueue.main.async {
-                        self.searchResultTableView.reloadData()
-                    }
-                }
-                prevName = nickname
-                indicatorView.stopAnimating()
+        if let nickname = searchField.text {
+            if prevName == searchField.text {
+                self.view.makeToast(UIStrings.duplicatedInputAlert, duration: 2.0, position: .center)
+            } else if nickname.count < 2  {
+                self.view.makeToast(UIStrings.shortInputAlert, duration: 2.0, position: .center)
             } else {
-                self.view.makeToast("유효한 이름을 입력하세요", duration: 2.0, position: .center)
+                checkNickname(nickname: nickname, prevName: prevName)
             }
         }
     }
+    
+    private func checkNickname(nickname: String, prevName: String) {
+        indicatorView.startAnimating()
+        self.searchResultTableView.beginUpdates()
+        self.searchResultTableView.endUpdates()
+
+        setSearchHistory(item: nickname)
+        APIs().getNicknameData(nickname: nickname) { (response) in
+            
+            self.result = response
+            DispatchQueue.main.async {
+                self.searchResultTableView.reloadData()
+            }
+        }
+        indicatorView.stopAnimating()
+
+    }
 
     private func setSearchHistory(item: String) {
-        var searchHistory = defaults.stringArray(forKey: "searchHistory") ?? [String]()
+        let keyString = UIStrings.userDefaultKeyForSearchHistory
+        var searchHistory = defaults.stringArray(forKey: keyString) ?? [String]()
         searchHistory.append(item)
-        defaults.set(searchHistory, forKey: "searchHistory")
+        defaults.set(searchHistory, forKey: keyString)
     }
 }
 
@@ -122,13 +128,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath as IndexPath) as? SearchResultCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultCell.identifier, for: indexPath as IndexPath) as? SearchResultCell else { return UITableViewCell() }
         let response =  result[indexPath.row]
         
         cell.gameImage.image = UIImage(named: response.gameName)
         if response.resultCount > 0 {
             // 중복된 이름이 있기 때문에 중복이라고 출력하고, expendable cell 반환
-            cell.searchResultLabel.text = "중복"
+            cell.searchResultLabel.text = UIStrings.duplicatedName
             if let character = response.results.first {
                 if response.results.count > 1 {
                     var levels: [String] = []
@@ -143,16 +149,16 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                     cell.levelLabel.text = levels.joined(separator: ", ")
                 } else {
                     cell.nameLaebl.text = character.nmae
-                    cell.serverNameLabel.text = character.server ?? "통합 서버"
+                    cell.serverNameLabel.text = character.server ?? UIStrings.oneServer
                     cell.levelLabel.text = "\(character.level)"
                 }
             }
         } else {
             // 게임 이미지만 채워넣고, 생성가능 이라는 문구 출력
-            cell.searchResultLabel.text = "생성 가능"
-            cell.nameLaebl.text = "-"
-            cell.serverNameLabel.text = "-"
-            cell.levelLabel.text = "-"
+            cell.searchResultLabel.text = UIStrings.availableName
+            cell.nameLaebl.text = UIStrings.emptyDash
+            cell.serverNameLabel.text = UIStrings.emptyDash
+            cell.levelLabel.text = UIStrings.emptyDash
         }
         
         return cell

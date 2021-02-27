@@ -9,7 +9,7 @@ import UIKit
 
 class SearchHistoryCell: UITableViewCell {
     @IBOutlet weak var searchKeywordLabel: UILabel!
-    
+    static var identifier: String = "SearchHistoryCell"
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

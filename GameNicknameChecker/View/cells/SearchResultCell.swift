@@ -19,6 +19,8 @@ class SearchResultCell: UITableViewCell {
             detailView.isHidden = true
         }
     }
+    
+    static var identifier: String = "SearchResultCell"
 
     override func awakeFromNib() {
         super.awakeFromNib()
