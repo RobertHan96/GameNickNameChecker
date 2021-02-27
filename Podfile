@@ -12,5 +12,7 @@ target 'GameNicknameChecker' do
 pod 'KakaoSDK'
 pod 'Kingfisher', '~> 6.0'
 pod 'Alamofire', '~> 5.2'
+pod 'Toast-Swift', '~> 5.0.1'
+pod 'NVActivityIndicatorView'
 
 end

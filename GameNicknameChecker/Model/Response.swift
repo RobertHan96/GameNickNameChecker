@@ -11,7 +11,6 @@ struct Response: Codable {
     let resultCount: Int
     let gameName: String
     let results: [GeneralInformation]
-    var open = false
 }
 
 struct GeneralInformation: Codable {

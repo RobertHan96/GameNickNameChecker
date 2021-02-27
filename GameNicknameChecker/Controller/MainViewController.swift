@@ -8,13 +8,18 @@
 import UIKit
 import KakaoSDKAuth
 import KakaoSDKUser
+import Toast_Swift
+import Alamofire
+import NVActivityIndicatorView
 
 class MainViewController: UIViewController {
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var myPageButton: UIBarButtonItem!
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var searchResultTableView: UITableView!
+    @IBOutlet weak var indicatorView: NVActivityIndicatorView!
+    let defaults = UserDefaults.standard
+    var prevName = ""
     var result : [Response] = []
     
     override func viewDidLoad() {
@@ -22,20 +27,26 @@ class MainViewController: UIViewController {
         self.setupGesture()
         self.setupTableView()
         self.setupUI()
+        searchField.delegate = self
     }
     
     private func setupUI() {
-        titleLabel.adjustsFontSizeToFitWidth = true
+        indicatorView.type = .ballPulseSync
+        indicatorView.color = .darkGray
         searchButton.layer.cornerRadius = 10
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(moveToMyPage(_:)))
-
+        let iconImage = UIImage(systemName: "person.crop.circle")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconImage, style: .plain, target: self, action: #selector(moveToMyPage(_:)))
+        navigationItem.rightBarButtonItem?.tintColor = .systemTeal
     }
+    
 
     private func setupGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(moveToMyPage(_:)))
     }
     
     private func setupTableView() {
+        searchResultTableView.cellLayoutMarginsFollowReadableWidth = false
+        searchResultTableView.separatorInset.left = 0
         searchResultTableView.delegate = self
         searchResultTableView.dataSource = self
         searchResultTableView.register(UINib.init(nibName: "SearchResultCell", bundle: nil), forCellReuseIdentifier: "SearchResultCell")
@@ -60,75 +71,47 @@ class MainViewController: UIViewController {
     }
 
     private func moveToMyPageView() {
+        
         guard let myPage = self.storyboard?.instantiateViewController(withIdentifier: "myPage") as? MyPageViewController
             else { return }
         self.navigationController?.pushViewController(myPage, animated: true)
     }
         
     @IBAction func checkNicknameDuplicated(_ sender: UIButton) {
-        result = []
-        self.searchResultTableView.reloadData()
-
         if let nickname = searchField.text{
-            let group = DispatchGroup()
-            let queue = DispatchQueue.global(qos: .userInteractive)
-            queue.async {
-                NexonAPI().serachInFifaKartRider(nickname: nickname) { (data) in
-                    print("LOG - KartRider",data)
-                    self.result.append(data)
-                    self.searchResultTableView.reloadData()
-                    print(self.result)
+            if nickname.count > 1 && nickname != prevName {
+                indicatorView.startAnimating()
+                self.searchResultTableView.beginUpdates()
+                self.searchResultTableView.endUpdates()
+
+                setSearchHistory(item: nickname)
+                APIs().getNicknameData(nickname: nickname) { (response) in
+                    
+                    self.result = response
+                    DispatchQueue.main.async {
+                        self.searchResultTableView.reloadData()
+                    }
                 }
+                prevName = nickname
+                indicatorView.stopAnimating()
+            } else {
+                self.view.makeToast("유효한 이름을 입력하세요", duration: 2.0, position: .center)
             }
-            queue.async {
-                NexonAPI().serachInFifaOnline(nickname: nickname) { (data) in
-                    print("LOG - FIFA Online",data)
-                    self.result.append(data)
-                    self.searchResultTableView.reloadData()
-
-                    print(self.result)
-
-                }
-            }
-            queue.async {
-                NexonAPI().serachInDnf(nickname: nickname) { (data) in
-                    print("LOG - DNF",data)
-                    self.result.append(data)
-                    self.searchResultTableView.reloadData()
-
-                    print(self.result)
-
-                }
-
-            }
-            queue.async {
-                NexonAPI().serachCyphers(nickname: nickname) { (data) in
-                    print("LOG - Cyphers",data)
-                    self.result.append(data)
-                    self.searchResultTableView.reloadData()
-
-                    print(self.result)
-
-                }
-            }
-
-            queue.async {
-                RiotAPI().serachInLoL(nickname: nickname) { (data) in
-                    print("LOG - LOL",data)
-                    self.result.append(data)
-                    self.searchResultTableView.reloadData()
-
-                    print(self.result)
-
-                }
-            }
-            
-            group.notify(queue: queue) {
-                print("LOG - 모든 API 확인 완료 결과 반환...")
-            }
-        } else {
-            print("이름을 입력해주세요.")
         }
+    }
+
+    private func setSearchHistory(item: String) {
+        var searchHistory = defaults.stringArray(forKey: "searchHistory") ?? [String]()
+        searchHistory.append(item)
+        defaults.set(searchHistory, forKey: "searchHistory")
+    }
+}
+
+
+extension MainViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
+        textField.resignFirstResponder()
+        return true
     }
 }
 
@@ -146,14 +129,45 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         if response.resultCount > 0 {
             // 중복된 이름이 있기 때문에 중복이라고 출력하고, expendable cell 반환
             cell.searchResultLabel.text = "중복"
+            if let character = response.results.first {
+                if response.results.count > 1 {
+                    var levels: [String] = []
+                    var servers: [String] = []
+                    for char in response.results {
+                        levels.append("\(char.level)")
+                        servers.append(char.server ?? "")
+                    }
+                    
+                    cell.nameLaebl.text = character.nmae
+                    cell.serverNameLabel.text = servers.joined(separator: ", ")
+                    cell.levelLabel.text = levels.joined(separator: ", ")
+                } else {
+                    cell.nameLaebl.text = character.nmae
+                    cell.serverNameLabel.text = character.server ?? "통합 서버"
+                    cell.levelLabel.text = "\(character.level)"
+                }
+            }
         } else {
             // 게임 이미지만 채워넣고, 생성가능 이라는 문구 출력
             cell.searchResultLabel.text = "생성 가능"
+            cell.nameLaebl.text = "-"
+            cell.serverNameLabel.text = "-"
+            cell.levelLabel.text = "-"
         }
         
         return cell
 
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? SearchResultCell {
+            UIView.animate(withDuration: 0.3) {
+                cell.detailView.isHidden = !cell.detailView.isHidden
+            }
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
     
 }
