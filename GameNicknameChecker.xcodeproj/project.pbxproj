@@ -11,7 +11,7 @@
 		003039F525EAAD99001B8F69 /* UIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003039F425EAAD99001B8F69 /* UIStrings.swift */; };
 		004B953825C277540034C425 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B953725C277540034C425 /* AppDelegate.swift */; };
 		004B953A25C277540034C425 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B953925C277540034C425 /* SceneDelegate.swift */; };
-		004B953C25C277540034C425 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B953B25C277540034C425 /* MainViewController.swift */; };
+		004B953C25C277540034C425 /* NicknameCheckeriewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B953B25C277540034C425 /* NicknameCheckeriewController.swift */; };
 		004B953F25C277540034C425 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 004B953D25C277540034C425 /* Main.storyboard */; };
 		004B954125C277570034C425 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 004B954025C277570034C425 /* Assets.xcassets */; };
 		004B954425C277570034C425 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 004B954225C277570034C425 /* LaunchScreen.storyboard */; };
@@ -21,9 +21,10 @@
 		004B955F25C2DC2A0034C425 /* NexonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B955E25C2DC2A0034C425 /* NexonAPI.swift */; };
 		004B956225C2DDC60034C425 /* APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B956125C2DDC60034C425 /* APIs.swift */; };
 		008F639D25C5AB66001F837D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008F639C25C5AB66001F837D /* Extensions.swift */; };
+		00B269CB284B64C200FC334E /* NicknameCheckerViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B269CA284B64C200FC334E /* NicknameCheckerViewControllerViewModel.swift */; };
+		00B269CD284B652F00FC334E /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B269CC284B652F00FC334E /* MyPageViewModel.swift */; };
 		00E6682F25EAB71E00805EC6 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E6682E25EAB71E00805EC6 /* IndicatorView.swift */; };
-		00F98B7C25C3296F001D6B78 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F98B7B25C3296F001D6B78 /* Response.swift */; };
-		00F98B7F25C5578B001D6B78 /* CodeableStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F98B7E25C5578B001D6B78 /* CodeableStructs.swift */; };
+		00F98B7C25C3296F001D6B78 /* APIResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F98B7B25C3296F001D6B78 /* APIResponseModel.swift */; };
 		00F98BAB25C59892001D6B78 /* SearchHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F98BA925C59892001D6B78 /* SearchHistoryCell.swift */; };
 		00F98BAC25C59892001D6B78 /* SearchHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 00F98BAA25C59892001D6B78 /* SearchHistoryCell.xib */; };
 		C898688AEEC201CE98B43E17 /* Pods_GameNicknameChecker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4263B0AEC0A8BD716CE81652 /* Pods_GameNicknameChecker.framework */; };
@@ -35,7 +36,7 @@
 		004B953425C277540034C425 /* GameNicknameChecker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameNicknameChecker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		004B953725C277540034C425 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		004B953925C277540034C425 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		004B953B25C277540034C425 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		004B953B25C277540034C425 /* NicknameCheckeriewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckeriewController.swift; sourceTree = "<group>"; };
 		004B953E25C277540034C425 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		004B954025C277570034C425 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		004B954325C277570034C425 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -46,9 +47,10 @@
 		004B955E25C2DC2A0034C425 /* NexonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NexonAPI.swift; sourceTree = "<group>"; };
 		004B956125C2DDC60034C425 /* APIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIs.swift; sourceTree = "<group>"; };
 		008F639C25C5AB66001F837D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		00B269CA284B64C200FC334E /* NicknameCheckerViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckerViewControllerViewModel.swift; sourceTree = "<group>"; };
+		00B269CC284B652F00FC334E /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		00E6682E25EAB71E00805EC6 /* IndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
-		00F98B7B25C3296F001D6B78 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		00F98B7E25C5578B001D6B78 /* CodeableStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeableStructs.swift; sourceTree = "<group>"; };
+		00F98B7B25C3296F001D6B78 /* APIResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponseModel.swift; sourceTree = "<group>"; };
 		00F98BA925C59892001D6B78 /* SearchHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryCell.swift; sourceTree = "<group>"; };
 		00F98BAA25C59892001D6B78 /* SearchHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchHistoryCell.xib; sourceTree = "<group>"; };
 		20A302332967BCB14D0ECC49 /* Pods-GameNicknameChecker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GameNicknameChecker.release.xcconfig"; path = "Target Support Files/Pods-GameNicknameChecker/Pods-GameNicknameChecker.release.xcconfig"; sourceTree = "<group>"; };
@@ -89,14 +91,15 @@
 		004B953625C277540034C425 /* GameNicknameChecker */ = {
 			isa = PBXGroup;
 			children = (
-				004B953725C277540034C425 /* AppDelegate.swift */,
-				004B953925C277540034C425 /* SceneDelegate.swift */,
-				004B954025C277570034C425 /* Assets.xcassets */,
-				00E6682D25EAB70E00805EC6 /* Configure */,
 				004B954525C277570034C425 /* Info.plist */,
-				004B955B25C2DB5D0034C425 /* Model */,
+				00B269C8284B644100FC334E /* App */,
+				00B269C9284B647100FC334E /* Service */,
+				00B269CE284B65E700FC334E /* Repository */,
+				00E6682D25EAB70E00805EC6 /* Utils */,
 				004B955C25C2DB630034C425 /* View */,
-				004B955D25C2DB6A0034C425 /* Controller */,
+				004B955D25C2DB6A0034C425 /* ViewController */,
+				00B269C7284B643300FC334E /* ViewModel */,
+				004B955B25C2DB5D0034C425 /* Model */,
 			);
 			path = GameNicknameChecker;
 			sourceTree = "<group>";
@@ -104,11 +107,7 @@
 		004B955B25C2DB5D0034C425 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				004B956125C2DDC60034C425 /* APIs.swift */,
-				004B955E25C2DC2A0034C425 /* NexonAPI.swift */,
-				002A01F125C2F03300279387 /* RiotAPI.swift */,
-				00F98B7B25C3296F001D6B78 /* Response.swift */,
-				00F98B7E25C5578B001D6B78 /* CodeableStructs.swift */,
+				00F98B7B25C3296F001D6B78 /* APIResponseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -123,13 +122,50 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		004B955D25C2DB6A0034C425 /* Controller */ = {
+		004B955D25C2DB6A0034C425 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				004B953B25C277540034C425 /* MainViewController.swift */,
+				004B953B25C277540034C425 /* NicknameCheckeriewController.swift */,
 				004B954C25C278BF0034C425 /* MyPageViewController.swift */,
 			);
-			path = Controller;
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		00B269C7284B643300FC334E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				00B269CA284B64C200FC334E /* NicknameCheckerViewControllerViewModel.swift */,
+				00B269CC284B652F00FC334E /* MyPageViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		00B269C8284B644100FC334E /* App */ = {
+			isa = PBXGroup;
+			children = (
+				004B953725C277540034C425 /* AppDelegate.swift */,
+				004B953925C277540034C425 /* SceneDelegate.swift */,
+				003039F425EAAD99001B8F69 /* UIStrings.swift */,
+				004B954025C277570034C425 /* Assets.xcassets */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		00B269C9284B647100FC334E /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		00B269CE284B65E700FC334E /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				004B956125C2DDC60034C425 /* APIs.swift */,
+				004B955E25C2DC2A0034C425 /* NexonAPI.swift */,
+				002A01F125C2F03300279387 /* RiotAPI.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		00E6682B25EAB5E900805EC6 /* cells */ = {
@@ -143,14 +179,13 @@
 			path = cells;
 			sourceTree = "<group>";
 		};
-		00E6682D25EAB70E00805EC6 /* Configure */ = {
+		00E6682D25EAB70E00805EC6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				00E6682E25EAB71E00805EC6 /* IndicatorView.swift */,
 				008F639C25C5AB66001F837D /* Extensions.swift */,
-				003039F425EAAD99001B8F69 /* UIStrings.swift */,
 			);
-			path = Configure;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		262D94F3486B1C6CE669368D /* Pods */ = {
@@ -288,18 +323,19 @@
 			files = (
 				002A01F225C2F03300279387 /* RiotAPI.swift in Sources */,
 				00E6682F25EAB71E00805EC6 /* IndicatorView.swift in Sources */,
-				004B953C25C277540034C425 /* MainViewController.swift in Sources */,
-				00F98B7F25C5578B001D6B78 /* CodeableStructs.swift in Sources */,
+				004B953C25C277540034C425 /* NicknameCheckeriewController.swift in Sources */,
 				004B956225C2DDC60034C425 /* APIs.swift in Sources */,
 				004B955F25C2DC2A0034C425 /* NexonAPI.swift in Sources */,
-				00F98B7C25C3296F001D6B78 /* Response.swift in Sources */,
+				00F98B7C25C3296F001D6B78 /* APIResponseModel.swift in Sources */,
 				003039F525EAAD99001B8F69 /* UIStrings.swift in Sources */,
 				004B953825C277540034C425 /* AppDelegate.swift in Sources */,
+				00B269CB284B64C200FC334E /* NicknameCheckerViewControllerViewModel.swift in Sources */,
 				008F639D25C5AB66001F837D /* Extensions.swift in Sources */,
 				004B953A25C277540034C425 /* SceneDelegate.swift in Sources */,
 				004B954D25C278BF0034C425 /* MyPageViewController.swift in Sources */,
 				00F98BAB25C59892001D6B78 /* SearchHistoryCell.swift in Sources */,
 				004B955225C27CCE0034C425 /* SearchResultCell.swift in Sources */,
+				00B269CD284B652F00FC334E /* MyPageViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

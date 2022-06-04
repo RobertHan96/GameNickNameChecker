@@ -34,6 +34,12 @@ PODS:
   - NVActivityIndicatorView (5.1.1):
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
   - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
@@ -41,6 +47,8 @@ DEPENDENCIES:
   - KakaoSDK
   - Kingfisher (~> 6.0)
   - NVActivityIndicatorView
+  - RxCocoa
+  - RxSwift
   - Toast-Swift (~> 5.0.1)
 
 SPEC REPOS:
@@ -57,6 +65,9 @@ SPEC REPOS:
     - KakaoSDKUser
     - Kingfisher
     - NVActivityIndicatorView
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - Toast-Swift
 
 SPEC CHECKSUMS:
@@ -72,8 +83,11 @@ SPEC CHECKSUMS:
   KakaoSDKUser: b5ddfcdaf4adce40f172cafc9d4864d1a8b4f938
   Kingfisher: adde87a4f74f6a3845395769354efff593581740
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: f96914660596781e4b75e20cf4d494d766c69bda
+PODFILE CHECKSUM: 7fa287711c2d9415cec00356529cf69fb6c4a342
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.11.3
